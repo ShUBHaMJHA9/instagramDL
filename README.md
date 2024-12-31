@@ -1,135 +1,136 @@
 # Instagram Videos Downloader
 
-Simple Website/API for downloading instagram videos made with Next.js that actually works with no problem.
-
-> [!NOTE]  
-> The website preview has been shut down due to exceeding the free usage limit on Vercel with more than **2,000,000** visits for the past week. Since I don't make any money from this website, I had to close it.
-
-![image](https://github.com/user-attachments/assets/c06458d7-ceb9-4793-8952-2a68027b8601)
-
+A simple website and API for downloading Instagram videos, built with Next.js.
 
 ## Description
 
-A website that lets you download Instagram videos easily and quickly. You can paste the URL of any public Instagram post and get the video file in MP4 format. there is also an API that you can use to integrate this functionality into your own applications. The API is simple, and it returns JSON responses with the video URL and other metadata.
+This project allows users to download Instagram videos easily by pasting the URL of any public Instagram post. The tool supports video downloads in MP4 format and includes an API for integrating this functionality into your own applications.
 
-_Note: Instagram stories aren't supported._
+**Note:** Instagram Stories are not supported.
 
-You can preview and try the website live in Vercel here : [instagram-videos.vercel.app](https://instagram-videos.vercel.app)
+You can preview the live website here: [Instagram Video Downloader](https://instagramdl-6orw.onrender.com).
 
-## Website Preview
+## Website Features
 
-Easy and User friendly UI (Interactions feedback and error messages).
+- **User-friendly interface:** Interactive feedback and error messages.
+- **Responsive design:** Optimized for both desktop and mobile devices.
+
+### Desktop Preview
 
 ![Desktop preview](https://github.com/riad-azz/readme-storage/blob/main/instagram-videos-downloader/desktop-preview.gif?raw=true)
 
-Responsive on mobile and small devices.
+### Mobile Preview
 
 ![Mobile preview](https://github.com/riad-azz/readme-storage/blob/main/instagram-videos-downloader/mobile-preview.gif?raw=true)
 
-## Running using docker
+---
 
-**1.** Clone the repository:
+## How to Run the Project
 
-```bash
-git clone https://github.com/riad-azz/instagram-video-downloader.git
-```
+### Using Docker
 
-**2.** Build the Docker image:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/<your-github-username>/<your-repo-name>.git
+   ```
 
-```bash
-docker build -t instagram-video-downloader .
-```
+2. Build the Docker image:
+   ```bash
+   docker build -t instagram-video-downloader .
+   ```
 
-**3.** Run the Docker container:
+3. Run the Docker container:
+   ```bash
+   docker run -p 3000:3000 instagram-video-downloader
+   ```
 
-```bash
-docker run -p 3000:3000 instagram-video-downloader
-```
+### Using Node.js
 
-## Running using node
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/<your-github-username>/<your-repo-name>.git
+   ```
 
-**1.** Cloning the repository:
+2. Navigate to the project directory:
+   ```bash
+   cd <your-repo-name>
+   ```
 
-```bash
-git clone https://github.com/riad-azz/instagram-video-downloader.git
-```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-**2.** Installing dependencies:
+4. Start the server:
+   ```bash
+   # For development
+   npm run dev
 
-```bash
-cd instagram-video-downloader
-```
+   # Build the project
+   npm run build
 
-```bash
-npm install
-```
+   # Start the production server
+   npm run start
+   ```
 
-**3.** Starting the server:
+---
 
-```bash
-# Development
-npm run dev
+## API Documentation
 
-# Build
-npm run build
+### Endpoint: `/api/video?postUrl={POST_URL}`
 
-# Start
-npm run start
-```
+#### Parameters:
 
-### Endpoint: /api/video?postUrl={POST_URL}
+- `postUrl` (required): The link to an Instagram Post or Reel.
 
-Parameters :
-
-- `postUrl` : Instagram Post or Reel link **(required)**.
-
-#### GET Request example
+#### Example GET Request
 
 ```bash
 curl -i "http://localhost:3000/api/video?postUrl=https://www.instagram.com/p/CGh4a0iASGS"
 ```
 
-#### API Response
+#### Example API Response
 
 ```json
 {
-  "status":"success",
-  "data":
-    {
-      "filename":"ig-downloader-1712666263.mp4",
-      "width":"640",
-      "height":"640",
-      "videoUrl":"https://scontent.cdninstagram.com/o1/v/t16/f1/m84/E84E5DFC48EA8...etc"
-    }
+  "status": "success",
+  "data": {
+    "filename": "ig-downloader-1712666263.mp4",
+    "width": "640",
+    "height": "640",
+    "videoUrl": "https://scontent.cdninstagram.com/o1/v/t16/f1/m84/E84E5DFC48EA8...etc"
+  }
 }
 ```
 
-## Rate Limiter - Upstash
+---
 
-In order to reduce the load on the API and ensure optimal performance, I have implemented rate limiting using Upstash. This integration allows me to restrict the number of requests made to the API within a specified time frame, preventing excessive traffic and potential service disruptions.
+## Rate Limiting with Upstash
 
-To enable this feature follow these steps:
+Rate limiting is implemented to ensure optimal performance and restrict excessive API usage.
 
-1. Create an account on [upstash.com](https://upstash.com/).
+### Enabling Rate Limiting:
+
+1. Sign up at [upstash.com](https://upstash.com/).
 2. Create a new Redis database.
-3. Click on the newly created database.
-4. Scroll down to REST API, click on `.env` and copy the two variables provided.
-5. Create a new `.env.local` file in the root directory.
-6. Paste what you copied inside and add `USE_UPSTASH` and set it to `true`.
+3. Copy the REST API credentials from the database settings.
+4. Create a `.env.local` file in the root directory and add the following:
 
-Here is what your `.env.local` should look like:
+   ```env
+   USE_UPSTASH="true"
+   UPSTASH_REDIS_REST_URL="YOUR-UPSTASH-URL"
+   UPSTASH_REDIS_REST_TOKEN="YOUR-UPSTASH-TOKEN"
+   ```
 
-```env
-# ...other variables
-USE_UPSTASH="true"
-UPSTASH_REDIS_REST_URL="YOUR-UPSTASH-URL"
-UPSTASH_REDIS_REST_TOKEN="YOUR-UPSTASH-TOKEN"
-```
+5. Modify any rate-limit configurations in `src/features/ratelimit/constants.ts`.
 
-All ratelimit configs can be found in `src/features/ratelimit/constants.ts`.
-
-If you would like to change the identifier (default is IP) you can change it in `src/middleware.ts`.
+---
 
 ## License
 
-This project is licensed under the [MIT] License - see the LICENSE.md file for details
+This project is licensed under the [MIT License](LICENSE.md).
+
+---
+
+For more details or contributions, check the repository: [GitHub Repository](https://github.com/<your-github-username>/<your-repo-name>).
+
