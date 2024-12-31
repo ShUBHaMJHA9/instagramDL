@@ -48,12 +48,12 @@ You can preview the live website here: [Instagram Video Downloader](https://inst
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/<your-github-username>/<your-repo-name>.git
+   git clone https://github.com/ShUBHaMJHA9/instagramDL.git
    ```
 
 2. Navigate to the project directory:
    ```bash
-   cd <your-repo-name>
+   cd instagramDL
    ```
 
 3. Install dependencies:
